@@ -1,0 +1,25 @@
+{
+  "name": "datasurf",
+  "version": "1.0.0",
+  "description": "Medical Management System whit HC",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lautaroemurua/DataSurF.git"
+  },
+  "author": "Lautaro Ezequiel Murua",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lautaroemurua/DataSurF/issues"
+  },
+  "homepage": "https://github.com/Lautaroemurua/DataSurF#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.8",
+    "mysql": "^2.16.0"
+  }
+}
