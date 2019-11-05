@@ -17,7 +17,8 @@ var _schema = new schema({
     mobileNumber: Number,
     phoneNumber: Number,
     emailAddress: String,
-    active: Boolean
+    active: Boolean,
+    deleted: Boolean
   },{
   timestamps: true,
   collection: 'patient'

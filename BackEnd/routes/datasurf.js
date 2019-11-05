@@ -7,7 +7,7 @@ router.get('/:id', controller.read)
 
 router.post('/', controller.create)
 router.put('/:id', controller.update)
-router.delete('/:id', controller.delete)
+router.put('/:id', controller.logicDelete)
 
 router.get('/timestamps/:from(*)-:to(*)', controller.searchByTimestampsRange)
 router.get('/timestamps/:from(*)', controller.searchByTimestampsRange)

@@ -3,8 +3,8 @@ var mongoose = require('mongoose')
 
 var controller = {}
 
-controller.list = (req, res) => {
-  Schema.find({})
+ controller.list = async (req, res) => {
+  await Schema.find({ deleted: false })
 //    .limit((req.query.limit) ? parseInt(req.query.limit) : 5)
   .exec((err, data) => {
     if (err) return res.status(500).json(err)
@@ -13,11 +13,11 @@ controller.list = (req, res) => {
   })
   }
 
-  controller.read = (req, res) => {
+  controller.read = async (req, res) => {
     var id = req.params.id
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({ msg: 'Some parameters are not valid' })
     
-    Schema.findOne({ _id: id }, (err, data) => {
+    await Schema.findOne({ _id: id }, (err, data) => {
       if (err) return res.status(500).json(err)
       if (!data) return res.status(404).json({ msg: "Not found" })
   
@@ -25,39 +25,40 @@ controller.list = (req, res) => {
     })
   }
 
-  controller.create = (req, res) => {
-    Schema.create(req.body, (err, data)=>{
+  controller.create = async (req, res) => {
+    await Schema.create(req.body, {'deleted':false}, (err, data)=>{
       if(err) return res.status(500).json(err)
       console.log(data)
       return res.status(201).json(data)
     })
   }
 
-  controller.delete = (req, res) => {
-    var id = req.params.id
-    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json( { msg: 'Some parameters are not valid' } )
-  
-    Schema.deleteOne({ _id: id }, (err, data) => {
-      if (err) return res.status(500).json(err)
-      if (data.n === 0) return res.status(404).json( { msg: 'Not found' } )      
-      if (data.n > 0) return res.status(200).json( {msg: 'Record deleted'} )   
-    })
-  }
-
-  controller.update = (req, res) => {
+  controller.logicDelete = async (req, res) => {
     var id = req.params.id
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({ msg: 'Some parameters are not valid' })
   
-    Schema.findOneAndUpdate({ _id: id }, {$set: req.body}, {new:true}, (err, data) => {
+    await Schema.findOneAndUpdate({ _id: id }, {$set: {"deleted":true}}, {new:true}, (err, data) => {
       if (err) return res.status(500).json(err)
       if (!data) return res.status(404).json({ msg: "Not found" })
-  
       return res.send(data)
     })
   }
-  
+
+  controller.update = async (req, res) => {
+    if (req.body) {
+      var id = req.params.id
+      if(!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({ msg: 'Some parameters are not valid' })
+    
+      await Schema.findOneAndUpdate({ _id: id }, {$set: req.body}, {new:true}, (err, data) => {
+        if (err) return res.status(500).json(err)
+        if (!data) return res.status(404).json({ msg: "Not found" })
+    
+        return res.send(data)
+      })
+    }
+  }
   //correguir rango de fechas
-  controller.searchByTimestampsRange = (req, res) => {
+  controller.searchByTimestampsRange = async (req, res) => {
     var action
     var from = req.params.from
     var to = req.params.to
@@ -69,7 +70,7 @@ controller.list = (req, res) => {
     if (from) query[action] =  {$gte : (from).replace(/[.]/g,'-')}
     if (to) query[action] =  {$lte : (to).replace(/[.]/g,'-')}
   
-    Schema.find(query)
+   await Schema.find(query)
     .select()
     .exec(function (err, result) {
       if (err) return res.status(500).json(err)
