@@ -10,7 +10,7 @@ var controller = {}
     // Explicitly exclude `_id`, see http://bit.ly/2aEfTdB
     select: 'name',
     //options: { limit: 5 }
-  })
+  })//.lean()
   //.limit((req.query.limit) ? parseInt(req.query.limit) : 5)
   .exec((err, data) => {
     if (err) return res.status(500).json(err)
