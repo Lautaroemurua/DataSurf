@@ -1,10 +1,10 @@
-var Schema = require('../models/Patient')
+var Schema = require('../models/Professionals')
 var mongoose = require('mongoose')
 
 var controller = {}
 
  controller.list = async (req, res) => {
-  await Schema.find({ deleted: false })
+  await Schema.find({ deleted: false }).populate('Professionals')
 //    .limit((req.query.limit) ? parseInt(req.query.limit) : 5)
   .exec((err, data) => {
     if (err) return res.status(500).json(err)

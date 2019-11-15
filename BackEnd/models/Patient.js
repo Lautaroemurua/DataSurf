@@ -4,6 +4,7 @@ const schema = mongoose.Schema
 var _schema = new schema({
     firstSurname: String,
     secondSurname: String,
+    professional:[{type: schema.Types.ObjectId, ref: 'Professionals'}] ,
     name: String,
     birthdate: Date,
     identificationNumber: Number,

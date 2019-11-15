@@ -1,8 +1,8 @@
-var express = require('express')
 const app = require('express')()
 const mongoose = require('mongoose')
-const config = require('./constants').config
+const config = require('./config').config
 const http = require('http')
+const cors = require('cors')
 
 /*,
  mysql = require('mysql'),
@@ -30,11 +30,13 @@ app.use(bodyParser.json({
   limit: '10mb',
   extended: true
 }))
+app.use(cors())
 
 app.get('/', (req, res) => {
   res.send('<h1>API Server running</h1><hr/><a href="/API">Documentation</a>')
 })
-app.use('/patients', require('./routes/datasurf'))
+app.use('/patients', require('./routes/patients'))
+app.use('/professionals', require('./routes/professionals'))
 
 //app.use('/autodata', require('./routes/datasurf'))
 
