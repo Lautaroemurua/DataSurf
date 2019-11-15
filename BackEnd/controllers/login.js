@@ -1,6 +1,4 @@
 var UserSchema = require('../models/Users')
-var mongoose = require('mongoose')
-const user = require('../models/Users')
 const jwt = require('jsonwebtoken')
 const app = require('express')()
 const config = require('../config/config').config
