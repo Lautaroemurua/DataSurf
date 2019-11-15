@@ -4,7 +4,7 @@ var mongoose = require('mongoose')
 var controller = {}
 
  controller.list = async (req, res) => {
-  await Schema.find({}).populate({
+  await Schema.find({deleted:false}).populate({
     path: 'professional',
     //match: { age: { $gte: 21 }},
     // Explicitly exclude `_id`, see http://bit.ly/2aEfTdB
