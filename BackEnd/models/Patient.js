@@ -4,7 +4,7 @@ const schema = mongoose.Schema
 var _schema = new schema({
     firstSurname: String,
     secondSurname: String,
-    professional:[{type: schema.Types.ObjectId, ref: 'Professionals'}] ,
+    professional:[{type: schema.Types.ObjectId, ref: 'professionals'}] ,
     name: String,
     birthdate: Date,
     identificationNumber: Number,
@@ -26,7 +26,10 @@ var _schema = new schema({
 })
 
 _schema.pre('save', function(next) {
-  if (!this.created) this.deleted = false;
+  if (!this.created){
+    this.deleted = false
+    this.active= true
+  };
   next();
 });
 

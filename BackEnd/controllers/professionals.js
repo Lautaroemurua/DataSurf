@@ -1,11 +1,17 @@
-var Schema = require('../models/Professionals')
+var Schema = require('../models/professionals')
 var mongoose = require('mongoose')
 
 var controller = {}
 
  controller.list = async (req, res) => {
-  await Schema.find({ deleted: false }).populate('Professionals')
-//    .limit((req.query.limit) ? parseInt(req.query.limit) : 5)
+  await Schema.find({ deleted: false }).populate({
+    path: 'professionals',
+    match: { deleted: false, active: true},
+    // Explicitly exclude `_id`, see http://bit.ly/2aEfTdB
+    select: 'name, identificationNumber',
+    //options: { limit: 5 }
+  })
+  //.limit((req.query.limit) ? parseInt(req.query.limit) : 5)
   .exec((err, data) => {
     if (err) return res.status(500).json(err)
     if (!data) return res.status(404).json( { msg: 'Not found' } )
