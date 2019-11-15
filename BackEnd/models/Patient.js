@@ -25,4 +25,9 @@ var _schema = new schema({
   collection: 'patient'
 })
 
+_schema.pre('save', function(next) {
+  if (!this.created) this.deleted = false;
+  next();
+});
+
 module.exports = mongoose.model('patient', _schema)

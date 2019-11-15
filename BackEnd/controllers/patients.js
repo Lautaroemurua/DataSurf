@@ -4,8 +4,14 @@ var mongoose = require('mongoose')
 var controller = {}
 
  controller.list = async (req, res) => {
-  await Schema.find({}).populate('Professionals')
-//    .limit((req.query.limit) ? parseInt(req.query.limit) : 5)
+  await Schema.find({}).populate({
+    path: 'professional',
+    //match: { age: { $gte: 21 }},
+    // Explicitly exclude `_id`, see http://bit.ly/2aEfTdB
+    select: 'name',
+    //options: { limit: 5 }
+  })
+  //.limit((req.query.limit) ? parseInt(req.query.limit) : 5)
   .exec((err, data) => {
     if (err) return res.status(500).json(err)
     if (!data) return res.status(404).json( { msg: 'Not found' } )
@@ -26,7 +32,7 @@ var controller = {}
   }
 
   controller.create = async (req, res) => {
-    await Schema.create(req.body, {'deleted':false}, (err, data)=>{
+    await Schema.create(req.body, (err, data)=>{
       if(err) return res.status(500).json(err)
       console.log(data)
       return res.status(201).json(data)
