@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const controller = require('../controllers/patients')
-//const auth = require('../middleware/auth')
+const auth2 = require('../middleware/auth')
 const app = express()
 const config = require('../config/config').config
 const jwt = require('jsonwebtoken')
@@ -26,7 +26,7 @@ auth.use((req, res, next) => {
     }
  });
 
-router.get('/',auth, controller.list)
+router.get('/',auth2.login, controller.list)
 router.get('/:id', controller.read)
 
 router.post('/', controller.create)

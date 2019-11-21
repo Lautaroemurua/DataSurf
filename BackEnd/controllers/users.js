@@ -1,12 +1,7 @@
-var Schema = require('../models/patient')
+var Schema = require('../models/Users')
 var mongoose = require('mongoose')
-const jwt = require('jsonwebtoken')
-const app = require('express')()
-const config = require('../config/config').config
 
-app.set('JWTKey', config.JWTKey);
 var controller = {}
-
 
 controller.create = async (req, res) => {
   await Schema.create(req.body, (err, data)=>{

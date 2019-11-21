@@ -16,6 +16,7 @@ app.get('/', (req, res) => {
   res.send('<h1>API Server running</h1><hr/><a href="/API">Documentation</a>')
 })
 app.use('/login', require('./routes/login'))
+app.use('/users', require('./routes/users'))
 app.use('/patients', require('./routes/patients'))
 app.use('/professionals', require('./routes/professionals'))
 

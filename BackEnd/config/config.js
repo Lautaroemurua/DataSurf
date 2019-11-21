@@ -6,6 +6,7 @@ module.exports = {
       DB:{
         URI: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/datasurf'
       },
-      JWTKey: "tokenUltraSecreto"
+      JWTKey: "tokenUltraSecreto",
+      ACCESS_TOKEN_TIME: 60000
     }
   }
