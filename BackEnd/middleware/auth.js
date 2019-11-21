@@ -9,16 +9,13 @@ async function login(req, res, next) {
     const password = req.body.password;
     if (!user || !password) throw new Error('ReqFieldsNotSended');
     let token = await validateCredentials(user, password,res);
-    console.log('Tu Token', token);
-    //let data = await authData.getUser(profile.collaboratorId);
-    return res.status(200).json({ msg: 'okey' });
+    return res.status(200).json({ token: token });
   } catch (err) {
     next(err);
   }
 }
 
 async function validateCredentials(user, password,res) {
-  // return new Promise(async (resolve, reject) => {
   try {
     await Schema.findOne({ username: user, password: password }, (err, data) => {
       if (err) return res.status(500).json(err)
@@ -29,29 +26,38 @@ async function validateCredentials(user, password,res) {
           check: true
         };
         const token = jwt.sign(payload, app.get('JWTKey'), {
-          expiresIn: 1440
+          expiresIn: config.ACCESS_TOKEN_TIME
         });
         res.json({
           message: 'Autenticación correcta',
           token: token
         });
-        return token
       } 
     })
-    //let response = await req(options);
-    //let decoded = access.decode(response.access_token);
-    //resolve();
   } catch (error) {
     return error
-    // if(error.error.error_description){
-    //   error = error.error.error_description;
-    //   if(error.includes('Invalid username or password')) error = 'InvalidCredentials';
-    // }
-    //     reject(error); 
-    //   }
-    // });
   }
 }
+
+let checkToken = ((req, res, next) => {
+  const token = req.headers['access-token'];
+
+  if (token) {
+    jwt.verify(token, app.get('JWTKey'), (err, decoded) => {      
+      if (err) {
+        return res.json({ mensaje: 'Token inválida' });    
+      } else {
+        req.decoded = decoded;    
+        next();
+      }
+    });
+  } else {
+    res.send({ 
+        mensaje: 'Token no proveída.' 
+    });
+  }
+});
 module.exports = {
-  login
+  login,
+  checkToken
 }

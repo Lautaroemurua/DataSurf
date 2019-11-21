@@ -2,6 +2,7 @@ const app = require('express')()
 const http = require('http')
 const cors = require('cors')
 const db = require('./data/db')
+const auth = require('./middleware/auth')
 //BodyParser configuration
 const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }))
@@ -17,7 +18,7 @@ app.get('/', (req, res) => {
 })
 app.use('/login', require('./routes/login'))
 app.use('/users', require('./routes/users'))
-app.use('/patients', require('./routes/patients'))
+app.use('/patients',auth.checkToken, require('./routes/patients'))
 app.use('/professionals', require('./routes/professionals'))
 
 
