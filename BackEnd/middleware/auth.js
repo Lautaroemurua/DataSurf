@@ -17,7 +17,7 @@ async function login(req, res, next) {
 
 async function validateCredentials(user, password,res) {
   try {
-    await Schema.findOne({ username: user, password: password }, (err, data) => {
+    await Schema.findOne({ user: user, password: password }, (err, data) => {
       if (err) return res.status(500).json(err)
       if (!data) return res.status(404).json({ msg: "Not found" })
       if (data){
@@ -57,7 +57,18 @@ let checkToken = ((req, res, next) => {
     });
   }
 });
+
+// async function logout(req, res, next) {
+//   try {
+//     req.session.loggedIn=false;
+//     res.redirect('/');
+//   } catch (err) {
+//     next(err);
+//   }
+// }
+
 module.exports = {
   login,
-  checkToken
+  checkToken,
+//  logout
 }
