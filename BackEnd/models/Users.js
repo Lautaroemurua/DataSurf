@@ -1,10 +1,13 @@
+'use strict'
 const mongoose = require('mongoose')
 const schema = mongoose.Schema
 
 var _schema = new schema({
-    username: String,
+    firstname: String,
+    lastName: String,
+    user: String,
     password: String,
-    emailAddress: String,
+    email: String,
     active: Boolean,
     deleted: Boolean
   },{

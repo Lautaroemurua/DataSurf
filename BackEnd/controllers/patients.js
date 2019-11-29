@@ -4,6 +4,7 @@ var mongoose = require('mongoose')
 var controller = {}
 
  controller.list = async (req, res) => {
+   
   await Schema.find({ deleted: 'false' }).populate({
     path: 'professional',
     //match: { age: { $gte: 21 }},
