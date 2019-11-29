@@ -1,7 +1,6 @@
 const app = require('express')()
 const http = require('http')
 const cors = require('cors')
-const db = require('./data/db')
 const config = require('./config/config').config
 const auth = require('./middleware/auth')
 //BodyParser configuration
