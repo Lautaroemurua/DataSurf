@@ -9,11 +9,11 @@ async function login(req, res, next) {
     const password = req.body.password;
     if (!user || !password) throw new Error('ReqFieldsNotSended');
     let token = await validateCredentials(user, password,res);
-    if(token){
-      return res.status(200).json({ token: token });
-    }else {
-      return res.status(404).json({ msg: 'No existe el token' });
-    }
+    // if(token){
+    //   //return res.status(200).json({ token: token });
+    // }else if(!token) {
+    //   return res.status(404).json({ msg: 'No existe el token' });
+    // }
   } catch (err) {
     next(err);
   }

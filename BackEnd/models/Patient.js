@@ -1,4 +1,5 @@
-const mongoose = require('mongoose')
+'use strict'
+const mongoose = require('mongoose').plugin(require('../plugins/PluginSchema'))
 const schema = mongoose.Schema
 
 var _schema = new schema({
@@ -21,16 +22,15 @@ var _schema = new schema({
     active: Boolean,
     deleted: Boolean
   },{
-  timestamps: true,
   collection: 'patient'
 })
 
-_schema.pre('save', function(next) {
-  if (!this.created){
-    this.deleted = false
-    this.active= true
-  };
-  next();
-});
+// _schema.pre('save', function(next) {
+//   if (!this.created){
+//     this.deleted = false
+//     this.active= true
+//   };
+//   next();
+// });
 
 module.exports = mongoose.model('patient', _schema)
