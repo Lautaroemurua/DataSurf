@@ -14,6 +14,7 @@ async function login(req, res, next) {
     // }else if(!token) {
     //   return res.status(404).json({ msg: 'No existe el token' });
     // }
+    return token;
   } catch (err) {
     next(err);
   }
@@ -23,7 +24,7 @@ async function validateCredentials(user, password,res) {
   try {
     await Schema.findOne({ user: user, password: password }, (err, data) => {
       if (err) return res.status(500).json(err)
-      if (!data) return res.status(404).json({ msg: "Not found" })
+      if (!data) return res.status(404).json({ msg: "User or password incorrect" })
       if (data){
         app.set('JWTKey', config.JWTKey);
         const payload = {
@@ -33,7 +34,7 @@ async function validateCredentials(user, password,res) {
           expiresIn: config.ACCESS_TOKEN_TIME
         });
         res.json({
-          message: 'Autenticación correcta',
+          message: 'Authentication successful',
           token: token
         });
       } 
@@ -49,7 +50,7 @@ let checkToken = ((req, res, next) => {
   if (token) {
     jwt.verify(token, app.get('JWTKey'), (err, decoded) => {      
       if (err) {
-        return res.json({ mensaje: 'Token inválida' });    
+        return res.json({ mensaje: 'Invalid Token' });    
       } else {
         req.decoded = decoded;    
         next();
@@ -57,7 +58,7 @@ let checkToken = ((req, res, next) => {
     });
   } else {
     res.send({ 
-        mensaje: 'Token no proveída.' 
+        mensaje: 'Token not found.'
     });
   }
 });
